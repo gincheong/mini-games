@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { useHomeStore } from '#/store/useHomeStore';
 import type { FurnitureType } from './types';
 
@@ -25,7 +26,15 @@ export default function Sidebar({ onAddRoom, toast }: SidebarProps) {
 		selectedFurnitureId,
 		selectRoom,
 		addFurniture,
+		updateRoom,
 	} = useHomeStore();
+
+	const [editingRoomName, setEditingRoomName] = useState(false);
+	const prevRoomId = useRef(selectedRoomId);
+	if (prevRoomId.current !== selectedRoomId) {
+		prevRoomId.current = selectedRoomId;
+		if (editingRoomName) setEditingRoomName(false);
+	}
 
 	const handleAddFurniture = (type: FurnitureType) => {
 		if (!selectedRoomId) {
@@ -167,11 +176,57 @@ export default function Sidebar({ onAddRoom, toast }: SidebarProps) {
 							</div>
 						) : selectedRoom ? (
 							<div style={{ fontSize: 12, color: '#94a3b8' }}>
-								<div
-									style={{ color: '#f1f5f9', fontWeight: 600, marginBottom: 4 }}
-								>
-									{selectedRoom.name}
-								</div>
+								{editingRoomName ? (
+									<input
+										// biome-ignore lint/a11y/noAutofocus: 이름 편집 시 즉시 포커스
+										autoFocus
+										defaultValue={selectedRoom.name}
+										style={{
+											width: '100%',
+											background: '#0f172a',
+											border: '1px solid #60a5fa',
+											borderRadius: 5,
+											padding: '3px 7px',
+											color: '#f1f5f9',
+											fontSize: 13,
+											fontWeight: 600,
+											marginBottom: 4,
+											boxSizing: 'border-box',
+										}}
+										onBlur={(e) => {
+											const val = e.target.value.trim();
+											if (val) updateRoom(selectedRoom.id, { name: val });
+											setEditingRoomName(false);
+										}}
+										onKeyDown={(e) => {
+											if (e.key === 'Enter') e.currentTarget.blur();
+											if (e.key === 'Escape') {
+												setEditingRoomName(false);
+											}
+										}}
+									/>
+								) : (
+									<button
+										type="button"
+										onClick={() => setEditingRoomName(true)}
+										style={{
+											display: 'block',
+											width: '100%',
+											background: 'none',
+											border: 'none',
+											padding: '3px 0',
+											color: '#f1f5f9',
+											fontWeight: 600,
+											fontSize: 13,
+											cursor: 'text',
+											textAlign: 'left',
+											marginBottom: 4,
+										}}
+										title="클릭해서 이름 편집"
+									>
+										{selectedRoom.name} ✏️
+									</button>
+								)}
 								<div>
 									크기: {Math.round(selectedRoom.width)} ×{' '}
 									{Math.round(selectedRoom.height)}
