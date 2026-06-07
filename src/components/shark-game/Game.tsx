@@ -1,6 +1,6 @@
 import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { FINGER_LANDMARK_INDEX } from './constants';
+import { FINGER_MCPS, FINGER_TIPS } from './constants';
 import {
 	Button,
 	Canvas,
@@ -151,6 +151,7 @@ export default function SharkGame() {
 		// 1. Detect Hand
 		let currentSharkX = -100;
 		let currentSharkY = -100;
+		let isFist = false;
 
 		if (
 			handLandmarkerRef.current &&
@@ -165,9 +166,14 @@ export default function SharkGame() {
 				);
 
 				if (results.landmarks && results.landmarks.length > 0) {
-					const landmark = results.landmarks[0][FINGER_LANDMARK_INDEX]; // Index finger tip
-					currentSharkX = (1 - landmark.x) * canvas.width;
-					currentSharkY = landmark.y * canvas.height;
+					const landmarks = results.landmarks[0];
+					const palmX = FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].x, 0) / FINGER_MCPS.length;
+					const palmY = FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].y, 0) / FINGER_MCPS.length;
+					currentSharkX = (1 - palmX) * canvas.width;
+					currentSharkY = palmY * canvas.height;
+					isFist = FINGER_TIPS.every(
+						(tip, i) => landmarks[tip].y > landmarks[FINGER_MCPS[i]].y,
+					);
 				}
 			} catch (e) {
 				console.error('Detection error:', e);
@@ -182,7 +188,20 @@ export default function SharkGame() {
 			ctx.font = '100px serif';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
-			ctx.fillText('🦈', currentSharkX, currentSharkY);
+			ctx.fillText(isFist ? '🦈' : '🐬', currentSharkX, currentSharkY);
+
+			if (!isFist) {
+				ctx.font = 'bold 18px sans-serif';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.fillStyle = 'white';
+				ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+				ctx.lineWidth = 4;
+				const label = '✊ 주먹을 쥐면 먹을 수 있어요!';
+				const labelY = currentSharkY - 70;
+				ctx.strokeText(label, currentSharkX, labelY);
+				ctx.fillText(label, currentSharkX, labelY);
+			}
 		}
 
 		// Update and Draw Foods
@@ -209,7 +228,7 @@ export default function SharkGame() {
 				(nx - currentSharkX) ** 2 + (ny - currentSharkY) ** 2,
 			);
 
-			if (currentSharkX > 0 && dist < 70) {
+			if (currentSharkX > 0 && isFist && dist < 70) {
 				// Ate food!
 				scoreBonus += 1;
 				// Respawn immediately
