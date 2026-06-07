@@ -37,6 +37,7 @@ export default function SharkGame() {
 	const [isModelLoading, setIsModelLoading] = useState(true);
 	const [score, setScore] = useState(0);
 	const [gameDuration, setGameDuration] = useState(DEFAULT_GAME_DURATION);
+	const [durationInput, setDurationInput] = useState(String(DEFAULT_GAME_DURATION));
 	const [timeLeft, setTimeLeft] = useState(DEFAULT_GAME_DURATION);
 	const foodsRef = useRef<FoodItem[]>([]);
 
@@ -318,10 +319,13 @@ export default function SharkGame() {
 							type="number"
 							min={5}
 							max={300}
-							value={gameDuration}
-							onChange={(e) =>
-								setGameDuration(Math.max(5, Number(e.target.value)))
-							}
+							value={durationInput}
+							onChange={(e) => setDurationInput(e.target.value)}
+							onBlur={() => {
+								const parsed = Math.max(5, Number(durationInput) || DEFAULT_GAME_DURATION);
+								setGameDuration(parsed);
+								setDurationInput(String(parsed));
+							}}
 						/>
 					</div>
 					{isModelLoading ? (
