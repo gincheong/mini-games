@@ -77,6 +77,7 @@ export default function SharkGame() {
 				});
 				videoRef.current.srcObject = stream;
 				await new Promise((resolve) => {
+					// biome-ignore lint/style/noNonNullAssertion: 상위 if 조건부를 통해 값이 있음이 보장됨
 					videoRef.current!.onloadedmetadata = resolve;
 				});
 				await videoRef.current.play();
@@ -167,8 +168,12 @@ export default function SharkGame() {
 
 				if (results.landmarks && results.landmarks.length > 0) {
 					const landmarks = results.landmarks[0];
-					const palmX = FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].x, 0) / FINGER_MCPS.length;
-					const palmY = FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].y, 0) / FINGER_MCPS.length;
+					const palmX =
+						FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].x, 0) /
+						FINGER_MCPS.length;
+					const palmY =
+						FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].y, 0) /
+						FINGER_MCPS.length;
 					currentSharkX = (1 - palmX) * canvas.width;
 					currentSharkY = palmY * canvas.height;
 					isFist = FINGER_TIPS.every(
