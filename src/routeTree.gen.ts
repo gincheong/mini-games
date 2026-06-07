@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as R7SecondsRouteImport } from './routes/7-seconds'
 import { Route as IndexRouteImport } from './routes/index'
 
+const R7SecondsRoute = R7SecondsRouteImport.update({
+  id: '/7-seconds',
+  path: '/7-seconds',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +25,39 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/7-seconds': typeof R7SecondsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/7-seconds': typeof R7SecondsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/7-seconds': typeof R7SecondsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/7-seconds'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/7-seconds'
+  id: '__root__' | '/' | '/7-seconds'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  R7SecondsRoute: typeof R7SecondsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/7-seconds': {
+      id: '/7-seconds'
+      path: '/7-seconds'
+      fullPath: '/7-seconds'
+      preLoaderRoute: typeof R7SecondsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  R7SecondsRoute: R7SecondsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

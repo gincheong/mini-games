@@ -1,14 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({ component: Home });
 
 function Home() {
 	return (
-		<div>
-			<h1>Welcome to TanStack Start</h1>
-			<p>
-				Edit <code>src/routes/index.tsx</code> to get started.
-			</p>
-		</div>
+		<main>
+			<h1>mini-games</h1>
+			<Link to="/7-seconds">7-seconds</Link>
+		</main>
 	);
 }
