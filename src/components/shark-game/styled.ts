@@ -69,6 +69,23 @@ export const Message = styled.div`
   border: 4px solid #00aaff;
 `;
 
+export const Input = styled.input`
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid #00aaff;
+  padding: 10px 16px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  width: 100px;
+  text-align: center;
+  margin-top: 12px;
+
+  &:focus {
+    outline: none;
+    border-color: #00d4ff;
+  }
+`;
+
 export const Button = styled.button`
   background: #00aaff;
   color: white;

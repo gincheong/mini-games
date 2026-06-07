@@ -5,6 +5,7 @@ import {
 	Button,
 	Canvas,
 	GameContainer,
+	Input,
 	Message,
 	StatBox,
 	UIOverlay,
@@ -22,7 +23,7 @@ interface FoodItem {
 }
 
 const FOOD_EMOJIS = ['🐟', '🐠', '🐡', '🦐', '🦑'];
-const GAME_DURATION = 30;
+const DEFAULT_GAME_DURATION = 30;
 
 export default function SharkGame() {
 	const videoRef = useRef<HTMLVideoElement>(null);
@@ -35,7 +36,8 @@ export default function SharkGame() {
 	);
 	const [isModelLoading, setIsModelLoading] = useState(true);
 	const [score, setScore] = useState(0);
-	const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
+	const [gameDuration, setGameDuration] = useState(DEFAULT_GAME_DURATION);
+	const [timeLeft, setTimeLeft] = useState(DEFAULT_GAME_DURATION);
 	const foodsRef = useRef<FoodItem[]>([]);
 
 	// Initialize MediaPipe
@@ -89,7 +91,7 @@ export default function SharkGame() {
 
 	const startGame = async () => {
 		setScore(0);
-		setTimeLeft(GAME_DURATION);
+		setTimeLeft(gameDuration);
 
 		// Ensure canvas size is set
 		if (canvasRef.current) {
@@ -303,6 +305,25 @@ export default function SharkGame() {
 					<h1>🦈 상어 먹이 사냥</h1>
 					<p>웹캠을 이용해 손을 움직여 상어를 조종하세요!</p>
 					<p>제한 시간 내에 최대한 많은 물고기를 잡으세요.</p>
+					<div>
+						<label
+							htmlFor="game-duration"
+							style={{ color: '#00aaff', fontSize: '1rem' }}
+						>
+							제한 시간 (초)
+						</label>
+						<br />
+						<Input
+							id="game-duration"
+							type="number"
+							min={5}
+							max={300}
+							value={gameDuration}
+							onChange={(e) =>
+								setGameDuration(Math.max(5, Number(e.target.value)))
+							}
+						/>
+					</div>
 					{isModelLoading ? (
 						<p style={{ color: '#00aaff', fontWeight: 'bold' }}>
 							🎮 게임 준비 중 (핸드 트래킹 모델 로딩)...
