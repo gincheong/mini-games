@@ -6,7 +6,10 @@ function Home() {
 	return (
 		<main>
 			<h1>mini-games</h1>
-			<Link to="/7-seconds">7-seconds</Link>
+			<div style={{ display: 'flex', gap: '20px', fontSize: '1.2rem' }}>
+				<Link to="/7-seconds">7-seconds</Link>
+				<Link to="/shark-game">🦈 Shark Game</Link>
+			</div>
 		</main>
 	);
 }

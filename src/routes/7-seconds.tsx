@@ -146,7 +146,10 @@ function SevenSecondsGame() {
 						<BestHistoryTitle>명예의 전당 (TOP 3)</BestHistoryTitle>
 						<HistoryList>
 							{bestRecords.map((record) => (
-								<HistoryItem key={`best-${record.id}`} $isClose={record.isClose}>
+								<HistoryItem
+									key={`best-${record.id}`}
+									$isClose={record.isClose}
+								>
 									<HistoryTime>{record.elapsedTime.toFixed(2)}초</HistoryTime>
 									<HistoryDiff>오차: {record.diff}초</HistoryDiff>
 								</HistoryItem>

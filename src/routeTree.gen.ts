@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SharkGameRouteImport } from './routes/shark-game'
 import { Route as R7SecondsRouteImport } from './routes/7-seconds'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SharkGameRoute = SharkGameRouteImport.update({
+  id: '/shark-game',
+  path: '/shark-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const R7SecondsRoute = R7SecondsRouteImport.update({
   id: '/7-seconds',
   path: '/7-seconds',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
+  '/shark-game': typeof SharkGameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
+  '/shark-game': typeof SharkGameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
+  '/shark-game': typeof SharkGameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/7-seconds'
+  fullPaths: '/' | '/7-seconds' | '/shark-game'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/7-seconds'
-  id: '__root__' | '/' | '/7-seconds'
+  to: '/' | '/7-seconds' | '/shark-game'
+  id: '__root__' | '/' | '/7-seconds' | '/shark-game'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R7SecondsRoute: typeof R7SecondsRoute
+  SharkGameRoute: typeof SharkGameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/shark-game': {
+      id: '/shark-game'
+      path: '/shark-game'
+      fullPath: '/shark-game'
+      preLoaderRoute: typeof SharkGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/7-seconds': {
       id: '/7-seconds'
       path: '/7-seconds'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R7SecondsRoute: R7SecondsRoute,
+  SharkGameRoute: SharkGameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
