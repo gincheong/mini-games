@@ -11,6 +11,6 @@ npm run dev # port:3000
 
 ## 배포
 
-netlify를 이용하여 배포되어 있습니다.
+netlify를 이용하여 배포되어 있습니다. (branch [netlify](https://github.com/gincheong/mini-games/tree/netlify))
 
 https://219-mini-games.netlify.app/
