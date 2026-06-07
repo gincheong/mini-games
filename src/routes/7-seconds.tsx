@@ -21,6 +21,9 @@ import {
 
 export const Route = createFileRoute('/7-seconds')({
 	component: SevenSecondsGame,
+	head: () => ({
+		meta: [{ title: '7 Seconds' }],
+	}),
 });
 
 export type GameStatus = 'IDLE' | 'RUNNING' | 'FINISHED';

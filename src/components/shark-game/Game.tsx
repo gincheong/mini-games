@@ -1,5 +1,6 @@
 import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { FINGER_LANDMARK_INDEX } from './constants';
 import {
 	Button,
 	Canvas,
@@ -164,7 +165,7 @@ export default function SharkGame() {
 				);
 
 				if (results.landmarks && results.landmarks.length > 0) {
-					const landmark = results.landmarks[0][8]; // Index finger tip
+					const landmark = results.landmarks[0][FINGER_LANDMARK_INDEX]; // Index finger tip
 					currentSharkX = (1 - landmark.x) * canvas.width;
 					currentSharkY = landmark.y * canvas.height;
 				}

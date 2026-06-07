@@ -3,6 +3,9 @@ import SharkGame from '@/components/shark-game/Game';
 
 export const Route = createFileRoute('/shark-game')({
 	component: SharkGamePage,
+	head: () => ({
+		meta: [{ title: 'Shark Game' }],
+	}),
 });
 
 function SharkGamePage() {
