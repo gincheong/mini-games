@@ -5,7 +5,7 @@ interface Props {
 	onRestart: () => void;
 }
 
-export function FinishedScreen({ score, onRestart }: Props) {
+export function ResultOverlay({ score, onRestart }: Props) {
 	return (
 		<Message>
 			<h1>게임 종료!</h1>

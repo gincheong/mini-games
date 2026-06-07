@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import SharkGame from '@/components/shark-game/Game';
+import { SharkGame } from '#/components/shark-game/SharkGame';
 
 export const Route = createFileRoute('/shark-game')({
 	component: SharkGamePage,

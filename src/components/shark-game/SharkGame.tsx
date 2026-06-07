@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { DEFAULT_GAME_DURATION } from './constants';
-import { FinishedScreen } from './FinishedScreen';
-import { IdleScreen } from './IdleScreen';
+import { ResultOverlay } from './ResultOverlay';
+import { StartOverlay } from './StartOverlay';
 import { Canvas, GameContainer, StatBox, UIOverlay, Video } from './styled';
 import { useGameLoop } from './useGameLoop';
 import { useHandTracking } from './useHandTracking';
 
-export default function SharkGame() {
+export function SharkGame() {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -49,7 +49,7 @@ export default function SharkGame() {
 			</UIOverlay>
 
 			{gameState === 'IDLE' && (
-				<IdleScreen
+				<StartOverlay
 					isModelLoading={isModelLoading}
 					durationInput={durationInput}
 					onDurationChange={setDurationInput}
@@ -66,7 +66,7 @@ export default function SharkGame() {
 			)}
 
 			{gameState === 'FINISHED' && (
-				<FinishedScreen score={score} onRestart={startGame} />
+				<ResultOverlay score={score} onRestart={startGame} />
 			)}
 		</GameContainer>
 	);

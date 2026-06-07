@@ -8,7 +8,7 @@ interface Props {
 	onStart: () => void;
 }
 
-export function IdleScreen({
+export function StartOverlay({
 	isModelLoading,
 	durationInput,
 	onDurationChange,
