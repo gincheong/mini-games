@@ -58,7 +58,7 @@ export default function SharkGame() {
 							delegate: 'GPU',
 						},
 						runningMode: 'VIDEO',
-						numHands: 1,
+						numHands: 2,
 					},
 				);
 				console.log('MediaPipe HandLandmarker initialized');
@@ -152,10 +152,8 @@ export default function SharkGame() {
 		const ctx = canvas.getContext('2d');
 		if (!ctx) return;
 
-		// 1. Detect Hand
-		let currentSharkX = -100;
-		let currentSharkY = -100;
-		let isFist = false;
+		// 1. Detect Hands
+		const sharks: { x: number; y: number; isFist: boolean }[] = [];
 
 		if (
 			handLandmarkerRef.current &&
@@ -169,19 +167,22 @@ export default function SharkGame() {
 					startTimeMs,
 				);
 
-				if (results.landmarks && results.landmarks.length > 0) {
-					const landmarks = results.landmarks[0];
-					const palmX =
-						FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].x, 0) /
-						FINGER_MCPS.length;
-					const palmY =
-						FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].y, 0) /
-						FINGER_MCPS.length;
-					currentSharkX = (1 - palmX) * canvas.width;
-					currentSharkY = palmY * canvas.height;
-					isFist = FINGER_TIPS.every(
-						(tip, i) => landmarks[tip].y > landmarks[FINGER_MCPS[i]].y,
-					);
+				if (results.landmarks) {
+					for (const landmarks of results.landmarks) {
+						const palmX =
+							FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].x, 0) /
+							FINGER_MCPS.length;
+						const palmY =
+							FINGER_MCPS.reduce((sum, i) => sum + landmarks[i].y, 0) /
+							FINGER_MCPS.length;
+						sharks.push({
+							x: (1 - palmX) * canvas.width,
+							y: palmY * canvas.height,
+							isFist: FINGER_TIPS.every(
+								(tip, i) => landmarks[tip].y > landmarks[FINGER_MCPS[i]].y,
+							),
+						});
+					}
 				}
 			} catch (e) {
 				console.error('Detection error:', e);
@@ -191,25 +192,26 @@ export default function SharkGame() {
 		// 2. Update and Draw
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-		// Draw Shark
-		if (currentSharkX > 0) {
+		// Draw Sharks
+		const showHint = sharks.length === 0 || sharks.some((s) => !s.isFist);
+		for (const shark of sharks) {
 			ctx.font = '100px serif';
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
-			ctx.fillText(isFist ? '🦈' : '🐬', currentSharkX, currentSharkY);
-
-			if (!isFist) {
-				ctx.font = 'bold 18px sans-serif';
-				ctx.textAlign = 'center';
-				ctx.textBaseline = 'middle';
-				ctx.fillStyle = 'white';
-				ctx.strokeStyle = 'rgba(0,0,0,0.6)';
-				ctx.lineWidth = 4;
-				const label = '✊ 주먹을 쥐면 먹을 수 있어요!';
-				const labelY = currentSharkY - 70;
-				ctx.strokeText(label, currentSharkX, labelY);
-				ctx.fillText(label, currentSharkX, labelY);
-			}
+			ctx.fillText(shark.isFist ? '🦈' : '🐬', shark.x, shark.y);
+		}
+		if (showHint && sharks.length > 0) {
+			const shark = sharks.find((s) => !s.isFist)!;
+			ctx.font = 'bold 18px sans-serif';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.fillStyle = 'white';
+			ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+			ctx.lineWidth = 4;
+			const label = '✊ 주먹을 쥐면 먹을 수 있어요!';
+			const labelY = shark.y - 70;
+			ctx.strokeText(label, shark.x, labelY);
+			ctx.fillText(label, shark.x, labelY);
 		}
 
 		// Update and Draw Foods
@@ -231,12 +233,14 @@ export default function SharkGame() {
 				ny = Math.max(0, Math.min(ny, canvas.height));
 			}
 
-			// Collision check
-			const dist = Math.sqrt(
-				(nx - currentSharkX) ** 2 + (ny - currentSharkY) ** 2,
+			// Collision check (any fist shark)
+			const eaten = sharks.some(
+				(shark) =>
+					shark.isFist &&
+					Math.sqrt((nx - shark.x) ** 2 + (ny - shark.y) ** 2) < 70,
 			);
 
-			if (currentSharkX > 0 && isFist && dist < 70) {
+			if (eaten) {
 				// Ate food!
 				scoreBonus += 1;
 				// Respawn immediately
