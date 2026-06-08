@@ -9,6 +9,9 @@ import { defineConfig } from 'vite';
 const config = defineConfig({
 	resolve: { tsconfigPaths: true },
 	plugins: [devtools(), netlify(), tanstackStart(), viteReact()],
+	ssr: {
+		noExternal: ['konva', 'react-konva'],
+	},
 });
 
 export default config;
