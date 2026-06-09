@@ -123,7 +123,7 @@ function SevenSecondsGame() {
 
 			<TimerWrapper>
 				{status === 'RUNNING' ? (
-					<HiddenTimer>?? : ??</HiddenTimer>
+					<HiddenTimer>?.??</HiddenTimer>
 				) : (
 					<TimerText $status={status}>{elapsedTime.toFixed(2)}</TimerText>
 				)}
