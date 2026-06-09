@@ -14,9 +14,6 @@ function Home() {
 				<li>
 					<Link to="/shark-game">상어 게임</Link>
 				</li>
-				<li>
-					<Link to="/home-item-finder">집안 물건 찾기</Link>
-				</li>
 			</Links>
 			<Footer>
 				<Anchor href="mailto:gincheong2@gmail.com">gincheong2@gmail.com</Anchor>

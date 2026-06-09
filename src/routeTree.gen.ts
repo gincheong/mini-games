@@ -10,18 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SharkGameRouteImport } from './routes/shark-game'
-import { Route as HomeItemFinderRouteImport } from './routes/home-item-finder'
 import { Route as R7SecondsRouteImport } from './routes/7-seconds'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SharkGameRoute = SharkGameRouteImport.update({
   id: '/shark-game',
   path: '/shark-game',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeItemFinderRoute = HomeItemFinderRouteImport.update({
-  id: '/home-item-finder',
-  path: '/home-item-finder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const R7SecondsRoute = R7SecondsRouteImport.update({
@@ -38,34 +32,30 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
-  '/home-item-finder': typeof HomeItemFinderRoute
   '/shark-game': typeof SharkGameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
-  '/home-item-finder': typeof HomeItemFinderRoute
   '/shark-game': typeof SharkGameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
-  '/home-item-finder': typeof HomeItemFinderRoute
   '/shark-game': typeof SharkGameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/7-seconds' | '/home-item-finder' | '/shark-game'
+  fullPaths: '/' | '/7-seconds' | '/shark-game'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/7-seconds' | '/home-item-finder' | '/shark-game'
-  id: '__root__' | '/' | '/7-seconds' | '/home-item-finder' | '/shark-game'
+  to: '/' | '/7-seconds' | '/shark-game'
+  id: '__root__' | '/' | '/7-seconds' | '/shark-game'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R7SecondsRoute: typeof R7SecondsRoute
-  HomeItemFinderRoute: typeof HomeItemFinderRoute
   SharkGameRoute: typeof SharkGameRoute
 }
 
@@ -76,13 +66,6 @@ declare module '@tanstack/react-router' {
       path: '/shark-game'
       fullPath: '/shark-game'
       preLoaderRoute: typeof SharkGameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home-item-finder': {
-      id: '/home-item-finder'
-      path: '/home-item-finder'
-      fullPath: '/home-item-finder'
-      preLoaderRoute: typeof HomeItemFinderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/7-seconds': {
@@ -105,7 +88,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R7SecondsRoute: R7SecondsRoute,
-  HomeItemFinderRoute: HomeItemFinderRoute,
   SharkGameRoute: SharkGameRoute,
 }
 export const routeTree = rootRouteImport
