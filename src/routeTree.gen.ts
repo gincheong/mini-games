@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SpaceGameRouteImport } from './routes/space-game'
 import { Route as SharkGameRouteImport } from './routes/shark-game'
 import { Route as R7SecondsRouteImport } from './routes/7-seconds'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SpaceGameRoute = SpaceGameRouteImport.update({
+  id: '/space-game',
+  path: '/space-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SharkGameRoute = SharkGameRouteImport.update({
   id: '/shark-game',
   path: '/shark-game',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
   '/shark-game': typeof SharkGameRoute
+  '/space-game': typeof SpaceGameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
   '/shark-game': typeof SharkGameRoute
+  '/space-game': typeof SpaceGameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/7-seconds': typeof R7SecondsRoute
   '/shark-game': typeof SharkGameRoute
+  '/space-game': typeof SpaceGameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/7-seconds' | '/shark-game'
+  fullPaths: '/' | '/7-seconds' | '/shark-game' | '/space-game'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/7-seconds' | '/shark-game'
-  id: '__root__' | '/' | '/7-seconds' | '/shark-game'
+  to: '/' | '/7-seconds' | '/shark-game' | '/space-game'
+  id: '__root__' | '/' | '/7-seconds' | '/shark-game' | '/space-game'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R7SecondsRoute: typeof R7SecondsRoute
   SharkGameRoute: typeof SharkGameRoute
+  SpaceGameRoute: typeof SpaceGameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/space-game': {
+      id: '/space-game'
+      path: '/space-game'
+      fullPath: '/space-game'
+      preLoaderRoute: typeof SpaceGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shark-game': {
       id: '/shark-game'
       path: '/shark-game'
@@ -89,16 +106,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R7SecondsRoute: R7SecondsRoute,
   SharkGameRoute: SharkGameRoute,
+  SpaceGameRoute: SpaceGameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
