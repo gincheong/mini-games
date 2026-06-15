@@ -158,3 +158,37 @@ export const HistoryDiff = styled.span`
   font-size: 0.9rem;
   color: #666;
 `;
+
+export const SettingRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: #555;
+`;
+
+export const SettingInput = styled.input`
+  width: 64px;
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: #1a1a1a;
+
+  &:disabled {
+    border-color: #ccc;
+    color: #999;
+    background: #f5f5f5;
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  }
+`;

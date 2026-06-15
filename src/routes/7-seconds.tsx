@@ -14,6 +14,8 @@ import {
 	HistoryTitle,
 	Instruction,
 	ResultText,
+	SettingInput,
+	SettingRow,
 	TimerText,
 	TimerWrapper,
 	Title,
@@ -40,6 +42,7 @@ function SevenSecondsGame() {
 	const [startTime, setStartTime] = useState<number | null>(null);
 	const [elapsedTime, setElapsedTime] = useState(0);
 	const [history, setHistory] = useState<GameRecord[]>([]);
+	const [targetSeconds, setTargetSeconds] = useState(7);
 	const timerRef = useRef<number | null>(null);
 
 	const startTimer = () => {
@@ -56,7 +59,7 @@ function SevenSecondsGame() {
 			const finalTime = (now - startTime) / 1000;
 			setElapsedTime(finalTime);
 
-			const diffValue = Math.abs(7 - finalTime);
+			const diffValue = Math.abs(targetSeconds - finalTime);
 			const newRecord: GameRecord = {
 				id: Date.now(),
 				elapsedTime: finalTime,
@@ -108,17 +111,34 @@ function SevenSecondsGame() {
 		};
 	}, [status, startTime]);
 
-	const diff = Math.abs(7 - elapsedTime).toFixed(3);
-	const isAnswerClose = Math.abs(7 - elapsedTime) < 0.5;
+	const diff = Math.abs(targetSeconds - elapsedTime).toFixed(3);
+	const isAnswerClose = Math.abs(targetSeconds - elapsedTime) < 0.5;
 
 	return (
 		<Container>
-			<Title>7.00초 세기</Title>
+			<Title>{targetSeconds}.00초 세기</Title>
+			<SettingRow>
+				목표 시간:
+				<SettingInput
+					type="number"
+					min={1}
+					max={60}
+					value={targetSeconds}
+					disabled={status !== 'IDLE'}
+					onChange={(e) => {
+						const val = Math.min(60, Math.max(1, Number(e.target.value)));
+						setTargetSeconds(val);
+					}}
+				/>
+				초
+			</SettingRow>
 			<Instruction>
-				{status === 'IDLE' && '시작 버튼을 누르고 마음속으로 7초를 세어보세요.'}
+				{status === 'IDLE' &&
+					`시작 버튼을 누르고 마음속으로 ${targetSeconds}초를 세어보세요.`}
 				{status === 'RUNNING' &&
-					'정확히 7초가 되었다고 생각될 때 멈춤 버튼을 누르세요!'}
-				{status === 'FINISHED' && `목표 7.00초와의 차이: ${diff}초`}
+					`정확히 ${targetSeconds}초가 되었다고 생각될 때 멈춤 버튼을 누르세요!`}
+				{status === 'FINISHED' &&
+					`목표 ${targetSeconds.toFixed(2)}초와의 차이: ${diff}초`}
 			</Instruction>
 
 			<TimerWrapper>
