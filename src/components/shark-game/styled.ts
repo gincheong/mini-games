@@ -43,6 +43,14 @@ export const UIOverlay = styled.div`
   justify-content: space-around;
   pointer-events: none;
   z-index: 10;
+  padding: 0 12px;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    top: 10px;
+    padding: 0 8px;
+    gap: 8px;
+  }
 `;
 
 export const StatBox = styled.div`
@@ -53,6 +61,12 @@ export const StatBox = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   border: 2px solid #00aaff;
+
+  @media (max-width: 480px) {
+    padding: 6px 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
 `;
 
 export const Message = styled.div`
@@ -67,6 +81,16 @@ export const Message = styled.div`
   text-align: center;
   z-index: 100;
   border: 4px solid #00aaff;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 20px 24px;
+    border-radius: 14px;
+    border-width: 3px;
+    font-size: 0.95rem;
+  }
 `;
 
 export const Input = styled.input`
@@ -83,6 +107,12 @@ export const Input = styled.input`
   &:focus {
     outline: none;
     border-color: #00d4ff;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    padding: 8px 12px;
+    width: 80px;
   }
 `;
 
@@ -101,5 +131,11 @@ export const Button = styled.button`
   &:hover {
     transform: scale(1.05);
     background: #00d4ff;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 24px;
+    font-size: 1rem;
+    margin-top: 16px;
   }
 `;

@@ -8,13 +8,24 @@ export const Container = styled.div`
   justify-content: center;
   min-height: 80vh;
   color: #333;
-  padding: 20px;
+  padding: 24px 20px;
+
+  @media (max-width: 480px) {
+    justify-content: flex-start;
+    padding: 2rem 16px 40px;
+    min-height: 100svh;
+  }
 `;
 
 export const Title = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 1rem;
   color: #1a1a1a;
+
+  @media (max-width: 480px) {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 export const Instruction = styled.p`
@@ -22,7 +33,13 @@ export const Instruction = styled.p`
   color: #666;
   margin-bottom: 2rem;
   text-align: center;
-  height: 1.5rem;
+  min-height: 1.5rem;
+  line-height: 1.5;
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 export const TimerWrapper = styled.div`
@@ -35,6 +52,13 @@ export const TimerWrapper = styled.div`
   justify-content: center;
   align-items: center;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+
+  @media (max-width: 480px) {
+    padding: 1.5rem 2rem;
+    min-width: 0;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
 `;
 
 export const TimerText = styled.div<{ $status: GameStatus }>`
@@ -43,6 +67,10 @@ export const TimerText = styled.div<{ $status: GameStatus }>`
   font-variant-numeric: tabular-nums;
   color: ${(props) => (props.$status === 'FINISHED' ? '#2ecc71' : '#333')};
   transition: color 0.3s ease;
+
+  @media (max-width: 480px) {
+    font-size: 4rem;
+  }
 `;
 
 export const HiddenTimer = styled.div`
@@ -50,6 +78,10 @@ export const HiddenTimer = styled.div`
   font-weight: 800;
   color: #bdc3c7;
   letter-spacing: 4px;
+
+  @media (max-width: 480px) {
+    font-size: 4rem;
+  }
 `;
 
 export const ActionButton = styled.button<{ $status: GameStatus }>`
@@ -77,6 +109,12 @@ export const ActionButton = styled.button<{ $status: GameStatus }>`
   &:active {
     transform: translateY(0);
   }
+
+  @media (max-width: 480px) {
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    width: 100%;
+  }
 `;
 
 export const ResultText = styled.div<{ $isClose: boolean }>`
@@ -90,6 +128,12 @@ export const ResultText = styled.div<{ $isClose: boolean }>`
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
 `;
 
 export const HistorySection = styled.section`
@@ -99,6 +143,11 @@ export const HistorySection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  @media (max-width: 480px) {
+    margin-top: 2rem;
+    gap: 1.5rem;
+  }
 `;
 
 export const HistoryGroup = styled.div`
@@ -120,6 +169,11 @@ export const HistoryTitle = styled.h2`
     height: 16px;
     background: #3498db;
     border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
   }
 `;
 
@@ -147,16 +201,28 @@ export const HistoryItem = styled.li<{ $isClose: boolean }>`
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   border-left: 5px solid ${(props) => (props.$isClose ? '#2ecc71' : '#e67e22')};
+
+  @media (max-width: 480px) {
+    padding: 0.75rem 0.875rem;
+  }
 `;
 
 export const HistoryTime = styled.span`
   font-weight: 700;
   font-size: 1.1rem;
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 export const HistoryDiff = styled.span`
   font-size: 0.9rem;
   color: #666;
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 `;
 
 export const SettingRow = styled.div`
@@ -166,6 +232,11 @@ export const SettingRow = styled.div`
   margin-bottom: 1.5rem;
   font-size: 1rem;
   color: #555;
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
 `;
 
 export const SettingInput = styled.input`
@@ -190,5 +261,10 @@ export const SettingInput = styled.input`
   &:focus {
     border-color: #2980b9;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    width: 56px;
+    font-size: 0.95rem;
   }
 `;
