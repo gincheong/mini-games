@@ -102,9 +102,10 @@ export function useGameLoop({
 					sharks.push({
 						x: (1 - palmX) * canvas.width,
 						y: palmY * canvas.height,
-						isFist: FINGER_TIPS.every(
+						isFist:
+						FINGER_TIPS.filter(
 							(tip, i) => landmarks[tip].y > landmarks[FINGER_MCPS[i]].y,
-						),
+						).length >= 3,
 					});
 				}
 			} catch (e) {

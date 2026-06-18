@@ -22,6 +22,9 @@ export function useHandTracking(videoRef: React.RefObject<HTMLVideoElement | nul
 						},
 						runningMode: 'VIDEO',
 						numHands: 2,
+						minHandDetectionConfidence: 0.3,
+						minHandPresenceConfidence: 0.3,
+						minTrackingConfidence: 0.3,
 					},
 				);
 				setIsModelLoading(false);
